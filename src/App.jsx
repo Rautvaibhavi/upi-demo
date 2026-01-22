@@ -1,58 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import QRCode from "qrcode.react";
+import QrScanner from "./QrScanner";
 
 export default function App() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [upiLink, setUpiLink] = useState("");
-  const [qr, setQr] = useState("");
+  const [scan, setScan] = useState(false);
 
-  useEffect(() => {
-    setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+  // 🔑 Your UPI details
+  const upiLink =
+    "upi://pay?pa=vaibhaviraut031@oksbi&pn=Vaibhavi%20Raut&am=100&cu=INR&tn=Demo%20Payment";
 
-    const upiId = "vaibhaviraut031@oksbi";
-    const name = "Vaibhavi Raut";
-    const amount = "100";
-    const note = "Website Payment";
-
-    const params = new URLSearchParams({
-      pa: upiId,
-      pn: name,
-      am: amount,
-      cu: "INR",
-      tn: note
-    });
-
-    const link = `upi://pay?${params.toString()}`;
-    setUpiLink(link);
-
-    setQr(
-      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-        link
-      )}`
-    );
-  }, []);
-
-  const payNow = () => {
-    if (!isMobile) {
-      alert("Please scan QR using your phone");
-      return;
+  const handleScan = (data) => {
+    if (data.startsWith("upi://pay")) {
+      window.location.href = data; // 🚀 Opens GPay
+    } else {
+      alert("Invalid QR");
     }
-    window.location.href = upiLink;
   };
 
   return (
     <div style={{ textAlign: "center", padding: 40 }}>
-      <h2>UPI Payment</h2>
+      <h2>UPI Payment Demo</h2>
 
-      <button onClick={payNow}>
-        Pay ₹100 (GPay / PhonePe)
-      </button>
+      {/* 🔹 Generate QR */}
+      <p>Scan this QR using camera</p>
+      <QRCode value={upiLink} size={250} />
 
-      {!isMobile && qr && (
-        <>
-          <h3>Scan QR using UPI App</h3>
-          <img src={qr} alt="UPI QR" width="250" />
-        </>
+      <br /><br />
+
+      {/* 🔹 Camera Access */}
+      {!scan && (
+        <button onClick={() => setScan(true)} style={btn}>
+          Open Camera & Scan QR
+        </button>
       )}
+
+      {scan && <QrScanner onScan={handleScan} />}
     </div>
   );
 }
+
+const btn = {
+  padding: "12px 20px",
+  fontSize: "16px",
+  cursor: "pointer",
+};

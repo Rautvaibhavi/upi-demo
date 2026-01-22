@@ -7,19 +7,17 @@ export default function QrScanner({ onScan }) {
       "qr-reader",
       {
         fps: 10,
-        qrbox: { width: 250, height: 250 }
+        qrbox: 250,
       },
       false
     );
 
     scanner.render(
       (decodedText) => {
-        onScan(decodedText);
         scanner.clear();
+        onScan(decodedText);
       },
-      (error) => {
-        // ignore scan errors
-      }
+      () => {}
     );
 
     return () => {
@@ -27,5 +25,5 @@ export default function QrScanner({ onScan }) {
     };
   }, []);
 
-  return <div id="qr-reader" style={{ width: "300px" }} />;
+  return <div id="qr-reader" style={{ width: 300, margin: "auto" }} />;
 }
