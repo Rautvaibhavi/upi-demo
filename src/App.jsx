@@ -1,131 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 
 const GPayPayment = () => {
-  // Configuration
   const upiId = "8849689402@ptsbi";
   const name = "RAUT VAIBHAVIBEN ANILBHAI";
-  
-  // The UPI Link (Without amount to force the 'Chat/Profile' view)
-  const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
-  
-  // QR Code URL
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
+  const [amount, setAmount] = useState("100"); // Default amount ₹100
 
-  const handleMobileClick = () => {
-    window.location.href = upiLink;
+  // Link 1: Opens the Chat/History view (No amount)
+  const chatLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
+
+  // Link 2: Opens the Pay screen (With specific amount)
+  const payLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=WebsitePayment`;
+
+  const openApp = (link) => {
+    window.location.href = link;
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>Scan to Pay via GPay</h2>
+        <h2 style={styles.title}>Payment Options</h2>
         <p style={styles.subtitle}>{name}</p>
-        
-        {/* The QR Code Image */}
-        <div style={styles.qrContainer}>
-          <img 
-            src={qrCodeUrl} 
-            alt="Scan to Chat on GPay" 
-            style={styles.qrImage}
+
+        {/* Amount Input Field */}
+        <div style={styles.inputContainer}>
+          <label style={styles.label}>Enter Amount (₹)</label>
+          <input 
+            type="number" 
+            value={amount} 
+            onChange={(e) => setAmount(e.target.value)}
+            style={styles.input}
           />
         </div>
 
-        <p style={styles.infoText}>
-          Scan this using any UPI App or click the button below on mobile.
-        </p>
-
-        {/* Action Buttons */}
         <div style={styles.buttonGroup}>
+          {/* Button 1: Pre-filled Amount */}
           <button 
-            onClick={handleMobileClick} 
-            style={styles.primaryButton}
+            onClick={() => openApp(payLink)} 
+            style={styles.payButton}
           >
-            Open Google Pay
+            Pay ₹{amount} Now
           </button>
-          
-          <a 
-            href={qrCodeUrl} 
-            download="payment-qr.png" 
-            style={styles.secondaryButton}
-            target="_blank" 
-            rel="noreferrer"
+
+          <div style={styles.divider}>OR</div>
+
+          {/* Button 2: Just Chat/History */}
+          <button 
+            onClick={() => openApp(chatLink)} 
+            style={styles.chatButton}
           >
-            Save QR Image
-          </a>
+            Open GPay Chat
+          </button>
+        </div>
+
+        <div style={styles.qrSection}>
+          <p style={styles.infoText}>Scan to pay ₹{amount}</p>
+          <img 
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(payLink)}`} 
+            alt="QR Code" 
+          />
         </div>
       </div>
     </div>
   );
 };
 
-// Simple inline styles
 const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100vh",
-    backgroundColor: "#f4f7f6",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-  },
-  card: {
-    backgroundColor: "#fff",
-    padding: "30px",
-    borderRadius: "16px",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-    textAlign: "center",
-    maxWidth: "350px",
-    width: "100%",
-  },
-  title: {
-    fontSize: "20px",
-    color: "#333",
-    marginBottom: "5px",
-  },
-  subtitle: {
-    fontSize: "14px",
-    color: "#666",
-    marginBottom: "20px",
-  },
-  qrContainer: {
-    border: "1px solid #eee",
-    padding: "10px",
-    borderRadius: "12px",
-    display: "inline-block",
-    marginBottom: "20px",
-  },
-  qrImage: {
-    display: "block",
-  },
-  infoText: {
-    fontSize: "13px",
-    color: "#888",
-    marginBottom: "20px",
-    lineHeight: "1.5",
-  },
-  buttonGroup: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  primaryButton: {
-    backgroundColor: "#1a73e8",
-    color: "white",
-    border: "none",
-    padding: "12px",
-    borderRadius: "8px",
-    fontSize: "16px",
-    fontWeight: "600",
-    cursor: "pointer",
-    transition: "background 0.3s",
-  },
-  secondaryButton: {
-    textDecoration: "none",
-    color: "#1a73e8",
-    fontSize: "14px",
-    fontWeight: "500",
-    marginTop: "5px",
-  }
+  container: { display: "flex", justifyContent: "center", padding: "20px", fontFamily: "Arial" },
+  card: { border: "1px solid #ddd", padding: "25px", borderRadius: "12px", width: "320px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" },
+  title: { fontSize: "18px", margin: "0 0 10px 0" },
+  subtitle: { fontSize: "14px", color: "#666", marginBottom: "20px" },
+  inputContainer: { marginBottom: "20px", textAlign: "left" },
+  label: { fontSize: "12px", color: "#888", display: "block", marginBottom: "5px" },
+  input: { width: "100%", padding: "10px", boxSizing: "border-box", borderRadius: "5px", border: "1px solid #ccc", fontSize: "16px" },
+  buttonGroup: { display: "flex", flexDirection: "column", gap: "10px" },
+  payButton: { backgroundColor: "#1a73e8", color: "white", border: "none", padding: "12px", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" },
+  chatButton: { backgroundColor: "#f1f3f4", color: "#3c4043", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer" },
+  divider: { margin: "10px 0", fontSize: "12px", color: "#aaa" },
+  qrSection: { marginTop: "20px", borderTop: "1px solid #eee", paddingTop: "20px" },
+  infoText: { fontSize: "12px", color: "#888", marginBottom: "10px" }
 };
 
 export default GPayPayment;
