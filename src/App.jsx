@@ -29,7 +29,7 @@ function App() {
         onClick={openGPayInterface}
         style={{ padding: "10px 20px", fontSize: "16px", cursor: "pointer" }}
       >
-        Pay via GPay
+        Pay 
       </button>
     </div>
   );
