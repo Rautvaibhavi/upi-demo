@@ -6,7 +6,7 @@ function App() {
 
   const payNow = () => {
 
-    const upiId = "rautkeyur78@okhdfcbank";   // change to real UPI ID
+    const upiId = "yespay.bizsbiz91192@yesbankltd";   // change to real UPI ID
     const name = "My Demo Store";
     const amount = "40";
     const orderId = "ORD12345";
