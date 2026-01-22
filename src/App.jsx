@@ -18,8 +18,7 @@ function App() {
     const name = "RAUT VAIBHAVIBEN ANILBHAI";
 
     // This link tells the phone: "Open a UPI app for this specific person"
-    const upiLink = `upi://pay?pa=${upiId}`;
-
+    const upiLink = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
     window.location.href = upiLink;
   };
  
