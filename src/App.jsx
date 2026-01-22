@@ -43,7 +43,7 @@ import React, { useState } from "react";
 
 function App() {
   const [chatOpen, setChatOpen] = useState(false);
-  const upiId = "example@upi"; // fixed UPI ID
+  const upiId = "yespay.bizsbiz91192@yesbankltd"; // fixed UPI ID
   const payeeName = "Your Name"; // optional
 
   const handleOpenChat = () => {
