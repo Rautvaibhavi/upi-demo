@@ -1,33 +1,41 @@
 import { useEffect, useState } from "react";
-import { createUpi } from "./api";
 
 export default function App() {
-  const [upiLink, setUpiLink] = useState(null);
-  const [qr, setQr] = useState(null);
-  const [mobile, setMobile] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [upiLink, setUpiLink] = useState("");
+  const [qr, setQr] = useState("");
 
   useEffect(() => {
-    setMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+    setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+
+    const upiId = "vaibhaviraut031@oksbi";
+    const name = "Vaibhavi Raut";
+    const amount = "100";
+    const note = "Website Payment";
+
+    const params = new URLSearchParams({
+      pa: upiId,
+      pn: name,
+      am: amount,
+      cu: "INR",
+      tn: note
+    });
+
+    const link = `upi://pay?${params.toString()}`;
+    setUpiLink(link);
+
+    setQr(
+      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+        link
+      )}`
+    );
   }, []);
 
-  const startPayment = async () => {
-    setLoading(true);
-    const data = await createUpi(100);
-
-    if (data.success) {
-      setUpiLink(data.upiLink);
-      setQr(data.qr);
-
-      // 📱 auto-open UPI app on mobile
-      if (mobile) {
-        window.location.href = data.upiLink;
-      }
+  const payNow = () => {
+    if (!isMobile) {
+      alert("Please scan QR using your phone");
+      return;
     }
-    setLoading(false);
-  };
-
-  const openUpi = () => {
     window.location.href = upiLink;
   };
 
@@ -35,27 +43,14 @@ export default function App() {
     <div style={{ textAlign: "center", padding: 40 }}>
       <h2>UPI Payment</h2>
 
-      <button onClick={startPayment} disabled={loading}>
-        {loading ? "Processing..." : "Pay ₹100"}
+      <button onClick={payNow}>
+        Pay ₹100 (GPay / PhonePe)
       </button>
 
-      {/* 📱 MOBILE UI */}
-      {mobile && upiLink && (
+      {!isMobile && qr && (
         <>
-          <h3>Select UPI App</h3>
-
-          <button onClick={openUpi}>Pay with Google Pay</button>
-          <button onClick={openUpi}>Pay with PhonePe</button>
-          <button onClick={openUpi}>Pay with Paytm</button>
-        </>
-      )}
-
-      {/* 💻 DESKTOP UI */}
-      {!mobile && qr && (
-        <>
-          <h3>Scan QR using any UPI App</h3>
+          <h3>Scan QR using UPI App</h3>
           <img src={qr} alt="UPI QR" width="250" />
-          <p>Open GPay / PhonePe on your phone to scan</p>
         </>
       )}
     </div>
