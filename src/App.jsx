@@ -7,7 +7,7 @@ const PhonePeIntegration = () => {
   const openPhonePe = () => {
     // PhonePe specific deep link
     // We remove '&am=' to try and trigger the contact/chat view
-    const phonePeLink = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
+    const phonePeLink = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(name)}`;
 
     // Attempt to open PhonePe
     window.location.href = phonePeLink;
