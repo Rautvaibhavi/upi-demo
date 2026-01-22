@@ -42,6 +42,37 @@ export default function App() {
     }
   };
 
+  const shareWhatsApp = () => {
+    const text = "Scan this QR to pay via UPI";
+    const url = qr; // QR image URL
+
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`,
+      "_blank"
+    );
+  };
+
+  const openGPay = () => {
+    window.location.href = upiLink;
+  };
+
+  const shareQrImage = async () => {
+    const response = await fetch(qr);
+    const blob = await response.blob();
+
+    const file = new File([blob], "upi-qr.png", { type: blob.type });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: "UPI QR Code",
+        files: [file],
+      });
+    } else {
+      alert("Sharing not supported on this device");
+    }
+  };
+
+
   return (
     <div style={{ textAlign: "center", padding: 40 }}>
       <h2>UPI Payment Demo</h2>
@@ -61,6 +92,16 @@ export default function App() {
         <div>
           <button onClick={sharePayment} style={btn}>
             Share Payment Link
+          </button>
+          <button onClick={shareWhatsApp} style={btn}>
+            Share QR on WhatsApp
+          </button>
+
+          <button onClick={openGPay}>Pay with GPay</button>
+          <button onClick={openGPay}>Pay with PhonePe</button>
+          <button onClick={openGPay}>Pay with Paytm</button>
+          <button onClick={shareQrImage}>
+            Share QR (Choose App)
           </button>
         </div>
       )}
