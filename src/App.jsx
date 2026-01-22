@@ -1,17 +1,16 @@
 import { useState } from "react";
-import QRCode from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 import QrScanner from "./QrScanner";
 
 export default function App() {
   const [scan, setScan] = useState(false);
 
-  // 🔑 Your UPI details
   const upiLink =
-    "upi://pay?pa=vaibhaviraut031@oksbi&pn=Vaibhavi%20Raut&am=100&cu=INR&tn=Demo%20Payment";
+    "upi://pay?pa=vaibhaviraut031@oksbi&pn=Vaibhavi%20Raut&am=100&cu=INR&tn=Demo";
 
   const handleScan = (data) => {
     if (data.startsWith("upi://pay")) {
-      window.location.href = data; // 🚀 Opens GPay
+      window.location.href = data;
     } else {
       alert("Invalid QR");
     }
@@ -21,15 +20,13 @@ export default function App() {
     <div style={{ textAlign: "center", padding: 40 }}>
       <h2>UPI Payment Demo</h2>
 
-      {/* 🔹 Generate QR */}
-      <p>Scan this QR using camera</p>
-      <QRCode value={upiLink} size={250} />
+      <p>Scan this QR</p>
+      <QRCodeCanvas value={upiLink} size={250} />
 
       <br /><br />
 
-      {/* 🔹 Camera Access */}
       {!scan && (
-        <button onClick={() => setScan(true)} style={btn}>
+        <button onClick={() => setScan(true)}>
           Open Camera & Scan QR
         </button>
       )}
@@ -38,9 +35,3 @@ export default function App() {
     </div>
   );
 }
-
-const btn = {
-  padding: "12px 20px",
-  fontSize: "16px",
-  cursor: "pointer",
-};
