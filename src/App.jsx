@@ -56,9 +56,9 @@ export default function App() {
 
   // 📤 Share QR IMAGE (GPay / PhonePe / Paytm)
   const shareQrImage = async () => {
-    const canvas = qrRef.current.querySelector("canvas");
-    const blob = await new Promise((resolve) =>
-      canvas.toBlob(resolve, "image/png")
+    const canvas = document.querySelector("canvas");
+    const blob = await new Promise((res) =>
+      canvas.toBlob(res, "image/png")
     );
 
     const file = new File([blob], "upi-qr.png", { type: "image/png" });
@@ -70,7 +70,7 @@ export default function App() {
         files: [file],
       });
     } else {
-      alert("Sharing not supported on this device");
+      alert("Sharing not supported");
     }
   };
 
