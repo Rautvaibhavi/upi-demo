@@ -1,29 +1,23 @@
-import { Html5QrcodeScanner } from "html5-qrcode";
-import { useEffect } from "react";
+import React from 'react'
+import { QRCodeCanvas } from 'qrcode.react'
 
-export default function QrScanner({ onScan }) {
-  useEffect(() => {
-    const scanner = new Html5QrcodeScanner(
-      "qr-reader",
-      {
-        fps: 10,
-        qrbox: 250,
-      },
-      false
-    );
+function QrScanner() {
 
-    scanner.render(
-      (decodedText) => {
-        scanner.clear();
-        onScan(decodedText);
-      },
-      () => {}
-    );
+  const upiLink =
+    `upi://pay?pa=dhruvavaiya@oksbi` +
+    `&pn=My%20Demo%20Store` +
+    `&am=499` +
+    `&cu=INR` +
+    `&tr=ORD12345` +
+    `&tn=Order%20Payment` +
+    `&mode=00`;
 
-    return () => {
-      scanner.clear().catch(() => {});
-    };
-  }, []);
-
-  return <div id="qr-reader" style={{ width: 300, margin: "auto" }} />;
+  return (
+    <div className="qr-box">
+      <h3>📷 Scan to Pay</h3>
+      <QRCodeCanvas value={upiLink} size={200} />
+    </div>
+  )
 }
+
+export default QrScanner

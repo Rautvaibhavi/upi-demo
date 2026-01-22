@@ -1,9 +1,7 @@
-export async function createUpi(amount) {
-  const res = await fetch("/api/create-upi", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ amount })
-  });
-
-  return await res.json();
+export const createOrder = () => {
+  return {
+    orderId: "ORD12345",
+    amount: 499,
+    product: "Wireless Headphones"
+  }
 }
