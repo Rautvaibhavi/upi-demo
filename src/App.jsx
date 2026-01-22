@@ -6,7 +6,7 @@ const GPayPayment = () => {
   const [amount, setAmount] = useState("100"); // Default amount ₹100
 
   // Link 1: Opens the Chat/History view (No amount)
-  const chatLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
+  const chatLink = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
 
   // Link 2: Opens the Pay screen (With specific amount)
   const payLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=WebsitePayment`;
