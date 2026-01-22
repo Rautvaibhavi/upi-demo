@@ -20,7 +20,7 @@ function App() {
       `&tn=Order%20Payment` +
       `&mode=00`;
 
-    <a href={upiLink}>Pay with UPI</a>
+    window.location.href = upiLink;
   };
 
   return (
