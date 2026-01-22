@@ -8,7 +8,7 @@ function App() {
 
     const upiId = "dhruvavaiya@oksbi";   // change to real UPI ID
     const name = "My Demo Store";
-    const amount = "499";
+    const amount = "4";
     const orderId = "ORD12345";
 
     const upiLink =
@@ -30,7 +30,7 @@ function App() {
 
       <div className="card">
         <h2>Wireless Headphones</h2>
-        <p>Price: ₹499</p>
+        <p>Price: ₹4</p>
         <p>Order ID: ORD12345</p>
 
         <button onClick={payNow}>
