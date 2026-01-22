@@ -8,7 +8,7 @@ function App() {
 
     const upiId = "dhruvavaiya@oksbi";   // change to real UPI ID
     const name = "My Demo Store";
-    const amount = "4";
+    const amount = "40";
     const orderId = "ORD12345";
 
     const upiLink =
@@ -18,7 +18,6 @@ function App() {
       `&cu=INR` +
       `&tr=${orderId}` +
       `&tn=Order%20Payment` +
-      `&url=${encodeURIComponent("https://example.com/invoice/" + orderId)}` +
       `&mode=00`;
 
     window.location.href = upiLink;
@@ -30,7 +29,7 @@ function App() {
 
       <div className="card">
         <h2>Wireless Headphones</h2>
-        <p>Price: ₹4</p>
+        <p>Price: ₹40</p>
         <p>Order ID: ORD12345</p>
 
         <button onClick={payNow}>
