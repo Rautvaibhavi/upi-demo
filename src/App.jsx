@@ -1,48 +1,46 @@
-import React from 'react'
-import './App.css'
-import QrScanner from './QrScanner'
+import React from 'react';
+import './App.css';
+import QrScanner from './QrScanner';
 
 function App() {
 
   const payNow = () => {
-
-    const upiId = "yespay.bizsbiz91192@yesbankltd";   // change to real UPI ID
+    const upiId = "yespay.bizsbiz91192@yesbankltd";   // Your UPI ID
     const name = "My Demo Store";
-    const amount = "40";
     const orderId = "ORD12345";
 
+    // UPI link WITHOUT amount
     const upiLink =
       `upi://pay?pa=${upiId}` +
       `&pn=${encodeURIComponent(name)}` +
-      `&am=${amount}` +
+      `&tr=${orderId}` +             // Transaction/order ID (optional)
+      `&tn=Order%20Payment` +        // Transaction note (optional)
       `&cu=INR` +
-      `&tr=${orderId}` +
-      `&tn=Order%20Payment` +
-      `&mode=00`;
+      `&mode=00`;                    // mode=00 is default
 
+    // Open UPI chat in app
     window.location.href = upiLink;
   };
 
   return (
     <div className="container">
-      <h1>🛒 UPI Deep Link Demo</h1>
+      <h1>🛒 UPI Chat Demo</h1>
 
       <div className="card">
         <h2>Wireless Headphones</h2>
-        <p>Price: ₹40</p>
         <p>Order ID: ORD12345</p>
 
         <button onClick={payNow}>
-          Pay with UPI
+          Pay via UPI (Open Chat)
         </button>
       </div>
 
       <QrScanner />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
 
 
 // import { useRef, useState } from "react";
