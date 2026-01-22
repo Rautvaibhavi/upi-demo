@@ -6,7 +6,7 @@ function App() {
 
   const payNow = () => {
 
-    const upiId = "gavlikrunal5-1@oksbi";   // change to real UPI ID
+    const upiId = "rautkeyur78@okhdfcbank";   // change to real UPI ID
     const name = "My Demo Store";
     const amount = "40";
     const orderId = "ORD12345";
@@ -20,7 +20,7 @@ function App() {
       `&tn=Order%20Payment` +
       `&mode=00`;
 
-    window.location.href = upiLink;
+    <a href={upiLink}>Pay with UPI</a>
   };
 
   return (

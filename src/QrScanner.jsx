@@ -4,7 +4,7 @@ import { QRCodeCanvas } from 'qrcode.react'
 function QrScanner() {
 
   const upiLink =
-    `upi://pay?pa=gavlikrunal5-1@oksbi` +
+    `upi://pay?pa=rautkeyur78@okhdfcbank` +
     `&pn=My%20Demo%20Store` +
     `&am=499` +
     `&cu=INR` +
