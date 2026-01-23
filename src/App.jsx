@@ -1,45 +1,50 @@
 import React from "react";
+import { generatePaymentPayload } from "./api";
 
-const PhonePeIntegration = () => {
-  const upiId = "8849689402@ptsbi"; // Your VPA
-  const name = "RAUT VAIBHAVIBEN ANILBHAI";
+function App() {
+  const upiId = "vaibhaviraut031@oksbi";
+  const amt = 10;
 
-  const openPhonePe = () => {
-    // PhonePe specific deep link
-    // We remove '&am=' to try and trigger the contact/chat view
-    const phonePeLink = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(name)}`;
-
-    // Attempt to open PhonePe
-    window.location.href = phonePeLink;
-
-    // Fallback: If PhonePe isn't installed, try the standard UPI link after 1 second
+  const redirectThankyouAfter30s = () => {
     setTimeout(() => {
-      window.location.href = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
-    }, 1000);
+      window.location.href = "/thank-you";
+    }, 30000);
+  };
+
+  const openPhonePeChat = () => {
+    const result = generatePaymentPayload(upiId, Math.round(amt * 100));
+    const dataa = result.base64;
+
+    const deepLink = `phonepe://native?data=${encodeURIComponent(
+      dataa
+    )}&id=p2ppayment`;
+
+    // Android WebView (same logic you used)
+    if (
+      typeof window !== "undefined" &&
+      window.AndroidApp &&
+      typeof window.AndroidApp.openActivity === "function"
+    ) {
+      window.AndroidApp.openActivity(deepLink);
+    } else {
+      window.location.href = deepLink;
+    }
+
+    redirectThankyouAfter30s();
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <button 
-        onClick={openPhonePe}
-        style={{
-          backgroundColor: "#5f259f", // PhonePe Purple
-          color: "white",
-          padding: "15px 30px",
-          border: "none",
-          borderRadius: "8px",
-          fontSize: "16px",
-          fontWeight: "bold",
-          cursor: "pointer"
-        }}
-      >
-        Open PhonePe Chat
+    <div style={{ padding: 20 }}>
+      <h2>PhonePe UPI Payment</h2>
+
+      <button onClick={openPhonePeChat}>
+        Pay via PhonePe
       </button>
     </div>
   );
-};
+}
 
-export default PhonePeIntegration;
+export default App;
 
 // import React from "react";
 
