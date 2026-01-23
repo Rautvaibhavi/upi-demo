@@ -3,7 +3,7 @@ import { generatePaymentPayload } from "./api";
 
 function App() {
   const upiId = "vaibhaviraut031@oksbi";
-  const amt = 10;
+  const amt = 10; // INR
 
   const redirectThankyouAfter30s = () => {
     setTimeout(() => {
@@ -11,7 +11,8 @@ function App() {
     }, 30000);
   };
 
-  const openPhonePeChat = () => {
+  // ================= PHONEPE =================
+  const openPhonePe = () => {
     const result = generatePaymentPayload(upiId, Math.round(amt * 100));
     const dataa = result.base64;
 
@@ -19,9 +20,7 @@ function App() {
       dataa
     )}&id=p2ppayment`;
 
-    // Android WebView (same logic you used)
     if (
-      typeof window !== "undefined" &&
       window.AndroidApp &&
       typeof window.AndroidApp.openActivity === "function"
     ) {
@@ -33,18 +32,89 @@ function App() {
     redirectThankyouAfter30s();
   };
 
+  // ================= GPAY =================
+  const openGPay = () => {
+    const txnNote = "JATXN" + Date.now();
+
+    const gpayLink =
+      `upi://pay?` +
+      `pa=${encodeURIComponent(upiId)}` +
+      `&pn=${encodeURIComponent("UPI Payment")}` +
+      `&am=${amt}` +
+      `&cu=INR` +
+      `&tn=${encodeURIComponent(txnNote)}`;
+
+    // Try opening GPay directly
+    window.location.href = gpayLink;
+
+    redirectThankyouAfter30s();
+  };
+
   return (
     <div style={{ padding: 20 }}>
-      <h2>PhonePe UPI Payment</h2>
+      <h2>Pay using UPI</h2>
 
-      <button onClick={openPhonePeChat}>
-        Pay via PhonePe
+      <button onClick={openPhonePe} style={{ marginRight: 10 }}>
+        Pay with PhonePe
+      </button>
+
+      <button onClick={openGPay}>
+        Pay with Google Pay
       </button>
     </div>
   );
 }
 
 export default App;
+
+//phone pay chat open code
+// import React from "react";
+// import { generatePaymentPayload } from "./api";
+
+// function App() {
+//   const upiId = "vaibhaviraut031@oksbi";
+//   const amt = 10;
+
+//   const redirectThankyouAfter30s = () => {
+//     setTimeout(() => {
+//       window.location.href = "/thank-you";
+//     }, 30000);
+//   };
+
+//   const openPhonePeChat = () => {
+//     const result = generatePaymentPayload(upiId, Math.round(amt * 100));
+//     const dataa = result.base64;
+
+//     const deepLink = `phonepe://native?data=${encodeURIComponent(
+//       dataa
+//     )}&id=p2ppayment`;
+
+//     // Android WebView (same logic you used)
+//     if (
+//       typeof window !== "undefined" &&
+//       window.AndroidApp &&
+//       typeof window.AndroidApp.openActivity === "function"
+//     ) {
+//       window.AndroidApp.openActivity(deepLink);
+//     } else {
+//       window.location.href = deepLink;
+//     }
+
+//     redirectThankyouAfter30s();
+//   };
+
+//   return (
+//     <div style={{ padding: 20 }}>
+//       <h2>PhonePe UPI Payment</h2>
+
+//       <button onClick={openPhonePeChat}>
+//         Pay via PhonePe
+//       </button>
+//     </div>
+//   );
+// }
+
+// export default App;
 
 // import React from "react";
 
